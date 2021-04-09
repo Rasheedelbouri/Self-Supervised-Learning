@@ -45,9 +45,6 @@ optimizer = Adam(net.parameters(), lr=0.001)
 
 net = train(net,optimizer,pixelDic,curric,batchsize,numEpochs,curricRepeats)
 
+torch.save(net.state_dict(), "savedTorchModel")
 
 clusters = test(net,pixelDic)
-
-j=2
-for i in range(len(clusters[j])):
-    visualiseImage(imDic, clusters[j][i])
