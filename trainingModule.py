@@ -6,7 +6,7 @@ Created on Fri Apr  9 14:55:29 2021
 """
 import pandas as pd
 import numpy as np
-
+from tqdm import tqdm
 import torch
 from torch import nn
 
@@ -16,8 +16,7 @@ from formattingModule import formatTorch
 
 def train(net,optimizer,pixelDic,curric=False,batchsize=32,numEpochs=10,curricRepeats=1):
 
-    for epoch in range(numEpochs):
-        print("=================Beginning epoch " + str(epoch))
+    for epoch in tqdm(range(numEpochs)):
         if curric:
             rankings = compareMatrices(pixelDic, [163, 12, 21, 35, 53])
             rankings = rankings.sort_values(0)

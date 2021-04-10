@@ -23,7 +23,7 @@ class dataLoader():
     
     def openImage(self, imFile):
         im = Image.open(os.path.join(self.path, imFile))
-        im = im.resize([224,224])
+        im = im.resize([84,84])
         
         return im
     
