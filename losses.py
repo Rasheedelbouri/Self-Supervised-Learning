@@ -7,7 +7,27 @@ Created on Mon Apr 12 14:50:25 2021
 
 from torch import nn
 
-def loss(net, X_train_rot, X_train_shft, X_train_flip, X_train_jit):
+def originalLoss(net, X_train_rot, X_train_shft):
+     logits1, logits2 = net.forward(X_train_rot), net.forward(X_train_shft) 
+ 
+     logSoft = nn.LogSoftmax(dim=1)
+     soft = nn.Softmax(dim=0)
+     
+     log_y_giv_x1 = logSoft(logits1)
+     log_y_giv_x2 = logSoft(logits2)
+ 
+     x1_giv_y = soft(logits1)
+     x2_giv_y = soft(logits2)
+     
+     l1 = - (x2_giv_y * log_y_giv_x1).sum() /len(logits1)
+     l2 = - (x1_giv_y * log_y_giv_x2).sum() /len(logits2)
+    
+     
+     L = (l1 + l2) / 4
+     
+     return L
+
+def expandedLoss(net, X_train_rot, X_train_shft, X_train_flip, X_train_jit):
 
     logits1, logits2 = net.forward(X_train_rot), net.forward(X_train_shft) 
     logits3, logits4 = net.forward(X_train_flip), net.forward(X_train_jit) 

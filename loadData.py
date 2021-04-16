@@ -16,14 +16,14 @@ class dataLoader():
     
     def __init__(self, foldername):
 
-        self.path = os.path.join('../../../Downloads/', str(foldername)+'/'+str(foldername))
+        self.path = os.path.join('../../../../Downloads/', str(foldername)+'/'+str(foldername))
         self.imList = pd.DataFrame(os.listdir(self.path))
         self.imList = list(self.imList[self.imList[0].str.contains(".jp")][0])
     
     
     def openImage(self, imFile):
         im = Image.open(os.path.join(self.path, imFile))
-        im = im.resize([84,84])
+        im = im.resize([224,224])
         
         return im
     

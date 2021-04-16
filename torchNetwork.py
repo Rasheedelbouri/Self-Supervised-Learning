@@ -5,39 +5,48 @@ Created on Wed Apr  7 18:02:59 2021
 @author: rashe
 """
 import torch
-from torch.optim import Adam
+from torch.optim import Adam, SGD
 from loadData import getDataSet
-from visualisationModule import visualiseImage
 from trainingModule import train
 from testModule import test
-from architectureModule import customNet
+from architectureModule import customNet, loadedResnet
 from tensorflow.keras.datasets import cifar10
+from visualisationModule import visualiseImage
 
 
-foldername = 'cifar' #adding a comment
+foldername = 'Shapes' #adding a comment
 
 if foldername.lower() == 'cifar':
     (_,_), (pixelDic,_) = cifar10.load_data()
+    pixelDic = pixelDic/255
 else:
     imDic, pixelDic = getDataSet(foldername)
 
-batchsize = 64
+batchsize = 10
 numEpochs=100
 curric = False
-curricRepeats = 1
+curricRepeats = 10
+relativeLoss = True
+loadModel = True
+save = False
+finetune = True
 if not curric:
     curricRepeats = 1
 
-net = customNet()
+if loadModel:
+    net = loadedResnet(finetune)
+else:
+    net = customNet()
 
-optimizer = Adam(net.parameters(), lr=0.001)
+if finetune:
+    optimizer = SGD(net.model_ft.fc.parameters(), lr=0.001)
+else:
+    optimizer = SGD(net.model_ft.parameters(), lr=0.001)
 
-net = train(net,optimizer,pixelDic,curric,batchsize,numEpochs,curricRepeats)
 
-torch.save(net.state_dict(), "savedTorchModel")
+net = train(net,optimizer,pixelDic,curric,batchsize,numEpochs,curricRepeats,relativeLoss)
+if save:
+    torch.save(net.state_dict(), "savedTorchModel")
 
 clusters = test(net,pixelDic)
 
-j=2
-for i in range(len(clusters[j])):
-    visualiseImage(imDic, clusters[j][i])
