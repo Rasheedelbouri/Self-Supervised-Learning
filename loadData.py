@@ -16,7 +16,7 @@ class dataLoader():
     
     def __init__(self, foldername):
 
-        self.path = os.path.join('../../../Downloads/', str(foldername)+'/'+str(foldername))
+        self.path = os.path.join('../../../../Downloads/', str(foldername)+'/'+str(foldername))
         self.imList = pd.DataFrame(os.listdir(self.path))
         self.imList = list(self.imList[self.imList[0].str.contains(".jp")][0])
     
