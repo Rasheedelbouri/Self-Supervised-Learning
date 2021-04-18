@@ -9,7 +9,7 @@ from torch.optim import Adam, SGD
 from loadData import getDataSet
 from trainingModule import train
 from testModule import test
-from architectureModule import customNet, loadedResnet
+from architectureModule import customNet, loadedPreTrained
 from tensorflow.keras.datasets import cifar10
 from visualisationModule import visualiseImage
 
@@ -34,14 +34,14 @@ if not curric:
     curricRepeats = 1
 
 if loadModel:
-    net = loadedResnet(finetune)
+    net = loadedPreTrained('resnet', finetune)
 else:
     net = customNet()
 
 if finetune:
-    optimizer = SGD(net.model_ft.fc.parameters(), lr=0.001)
+    optimizer = SGD(net.model_ft.fc.parameters(), lr=0.1)
 else:
-    optimizer = SGD(net.model_ft.parameters(), lr=0.001)
+    optimizer = SGD(net.model_ft.parameters(), lr=0.1)
 
 
 net = train(net,optimizer,pixelDic,curric,batchsize,numEpochs,curricRepeats,relativeLoss)
