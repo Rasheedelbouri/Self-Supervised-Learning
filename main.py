@@ -6,12 +6,12 @@ Created on Wed Apr  7 18:02:59 2021
 """
 import torch
 from torch.optim import Adam, SGD
-from loadData import getDataSet
-from trainingModule import train
-from testModule import test
-from architectureModule import customNet, loadedPreTrained
+from data.loadData import getDataSet
+from routines.trainingModule import train
+from routines.testModule import test
+from model.architectureModule import customNet, loadedPreTrained
 from tensorflow.keras.datasets import cifar10
-from visualisationModule import visualiseImage
+from visualise.visualisationModule import visualiseImage
 
 
 foldername = 'Shapes' #adding a comment

@@ -9,10 +9,10 @@ import numpy as np
 from tqdm import tqdm
 import torch
 
-from curriculumModule import compareMatrices
-from augmentationModule import augmentation1, augmentation2, augmentation3, augmentation4, augmentation5, augmentation6
-from formattingModule import formatTorch
-from losses import expandedLoss, groundedLoss, originalLoss
+from data.curriculumModule import compareMatrices
+from data.augmentationModule import augmentation1, augmentation2, augmentation3, augmentation4, augmentation5, augmentation6
+from data.formattingModule import formatTorch
+from model.losses import expandedLoss, groundedLoss, originalLoss
 
 def train(net,optimizer,pixelDic,curric=False,batchsize=32,numEpochs=10,curricRepeats=1, relativeLoss=False):
 
