@@ -14,39 +14,41 @@ from tensorflow.keras.datasets import cifar10
 from visualise.visualisationModule import visualiseImage
 
 
-foldername = 'Shapes' #adding a comment
+if __name__ == "__main__":
 
-if foldername.lower() == 'cifar':
-    (_,_), (pixelDic,_) = cifar10.load_data()
-    pixelDic = pixelDic/255
-else:
-    imDic, pixelDic = getDataSet(foldername)
+    foldername = 'Shapes' #adding a comment
 
-batchsize = 10
-numEpochs=100
-curric = False
-curricRepeats = 10
-relativeLoss = True
-loadModel = True
-save = False
-finetune = True
-if not curric:
-    curricRepeats = 1
+    if foldername.lower() == 'cifar':
+        (_,_), (pixelDic,_) = cifar10.load_data()
+        pixelDic = pixelDic/255
+    else:
+        imDic, pixelDic = getDataSet(foldername)
 
-if loadModel:
-    net = loadedPreTrained('resnet', finetune)
-else:
-    net = customNet()
+    batchsize = 10
+    numEpochs=100
+    curric = False
+    curricRepeats = 10
+    relativeLoss = True
+    loadModel = True
+    save = False
+    finetune = True
+    if not curric:
+        curricRepeats = 1
 
-if finetune:
-    optimizer = SGD(net.model_ft.fc.parameters(), lr=0.1)
-else:
-    optimizer = SGD(net.model_ft.parameters(), lr=0.1)
+    if loadModel:
+        net = loadedPreTrained('resnet', finetune)
+    else:
+        net = customNet()
+
+    if finetune:
+        optimizer = SGD(net.model_ft.fc.parameters(), lr=0.1)
+    else:
+        optimizer = SGD(net.model_ft.parameters(), lr=0.1)
 
 
-net = train(net,optimizer,pixelDic,curric,batchsize,numEpochs,curricRepeats,relativeLoss)
-if save:
-    torch.save(net.state_dict(), "savedTorchModel")
+    net = train(net,optimizer,pixelDic,curric,batchsize,numEpochs,curricRepeats,relativeLoss)
+    if save:
+        torch.save(net.state_dict(), "savedTorchModel")
 
-clusters = test(net,pixelDic)
+    clusters = test(net,pixelDic)
 
