@@ -62,15 +62,26 @@ class customNet(nn.Module):
         return x
     
 
-class loadedResnet(nn.Module):
+class loadedPreTrained(nn.Module):
     
-    def __init__(self, finetune=True):
-        super(loadedResnet, self).__init__()
+    def __init__(self, model, finetune=True):
+        super(loadedPreTrained, self).__init__()
         
         assert isinstance(finetune, bool)
+        assert isinstance(model, str)
+        
+        
         self.finetune = finetune
         
-        self.model_ft = models.resnet18(pretrained=True)
+        if model.lower() == "resnet":
+            model = models.resnet18
+        elif model.lower() == "vgg":
+            model = models.vgg16
+        elif model.lower() == "densenet":
+            model = models.densenet161
+            
+        
+        self.model_ft = model(pretrained=True)
         
         
         if self.finetune:

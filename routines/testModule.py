@@ -7,7 +7,7 @@ Created on Fri Apr  9 15:04:56 2021
 
 import numpy as np
 import pandas as pd
-from formattingModule import testFormatTorch
+from data.formattingModule import testFormatTorch
 
 def test(net, pixelDic):
 
